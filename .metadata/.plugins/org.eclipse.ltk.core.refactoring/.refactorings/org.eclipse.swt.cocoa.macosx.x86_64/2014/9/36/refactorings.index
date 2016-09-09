@@ -1,0 +1,9 @@
+1409889727335	Infer generic type arguments
+1409889740759	Infer generic type arguments
+1409889807579	Extract local variable 'constructor2'
+1409889814580	Extract local variable 'constructor3'
+1409889819647	Extract local variable 'constructor2'
+1409889826141	Extract local variable 'constructor3'
+1409889860709	Infer generic type arguments
+1409889878801	Extract method 'extracted'
+1409889885335	Extract method 'extracted'
