@@ -1,0 +1,62 @@
+?
+help
+load
+getwd()
+dir()
+read_csv("specdata/1.csv")
+read.csv("specdata/1.csv")
+read.csv("specdata/001.csv")
+>read.table
+?read.table
+read.table("specdata/001.csv", header = TRUE, sep = ",")
+X = read.table("specdata/001.csv", header = TRUE, sep = ",")
+?describe
+shape(X)
+dim(X)
+head(X, 5)
+mean(X, def$sulfate)
+mean(X)
+?mean
+mean(X["sulfate"])
+mean(X["sulfate"], rm.na = TRUE)
+mean(df$sulfate, na.rm = TRUE)
+mean(df$sulfate, rm.na = TRUE)
+mean(X$sulfate, rm.na = TRUE)
+mean(X$ID, rm.na = TRUE)
+mean(X$nitrate, rm.na = TRUE)
+mean(X$nitrate)
+mean(X$sulfate)
+X[669,:]
+X[669,]
+data.frame(a=1:10, b=21:30)
+frames <- list(data.frame(a=1:10, b=21:30), data.frame(a=11:15, b=31:35))
+frames
+results <- list(a=numeric(), b=numeric())
+results
+?
+adf
+var
+var()
+start.a <- start.b <- end.a <- end.b <- 0
+seq_along(frames)
+head(X, 5)
+length(X$sulfate)
+unlist(X$ID)
+unlist(X$sulfate)
+summary(X)
+y = numeric()
+y
+y <- X$sulfate
+head(y, 5)
+mean(y, rm.na = TRUE)
+summary(y)
+mean(y)
+class(y)
+mean(ym...)
+mean(y,...)
+?mean
+mean(y, na.rm = TRUE)
+mean(X$sulfate, na.rm = TRUE)
+list.files(path = "specdata", pattern = "*.csv")
+exit()
+quit()
