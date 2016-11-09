@@ -1,0 +1,89 @@
+---
+title: "Statistical Inference Course Project"
+author: "Pradeep Babburi"
+date: "10/31/2016"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(datasets)
+library(ggplot2)
+library(gridExtra)
+```
+
+## Part 2: Inferential Data Analysis
+
+###Introduction
+
+This report outlines the basic statistical inferences on the analysis of ToothGrowth data. The data available in the R datasets package is "The Effect of Vitamin C on Tooth Growth in Guinea Pigs". The data contains 60 observations of 3 variables. The variables are 
+
+* _len_ - The length of odontoblasts (cells responsible for tooth growth) in 60 guinea pigs.
+* _supp_ - supplement type used to deliver vitamin C. One of orange juice (coded as OJ) or ascorbic acid (coded as VC).
+* _dose_ - One of three dose levels of vitamin C [0.5, 1, 2] mg/day received by each animal.
+
+For convenience the data is stored in a data frame "tg". 
+
+```{r data, echo=TRUE}
+tg <- ToothGrowth              # ToothGrowth data
+tg$dose <- factor(tg$dose)     # converting dose to a categorical variable
+str(tg)                        # overview of data
+```
+
+### Exploratory Analysis
+In this report we will try to gain an understanding of the effects on length of odontoblasts with varying _supp_ and _dose_ which are read as factors for convenience in our analyis. The 60 responses of length can be segregated into 10 of each of the following groups.
+
+	Supplement OJ, dose 0.5 mg/day
+	Supplement OJ, dose 1 mg/day
+	Supplement OJ, dose 2 mg/day
+	Supplement VC, dose 0.5 mg/day
+	Supplement VC, dose 1 mg/day
+	Supplement VC, dose 2 mg/day
+	
+Six variables are created to store the lengths of all the above groups.
+
+```{r variables, echo=TRUE}
+len.oj.d5 <- tg$len[tg$supp == "OJ"& tg$dose == 0.5]
+len.oj.d1 <- tg$len[tg$supp == "OJ"& tg$dose == 1]
+len.oj.d2 <- tg$len[tg$supp == "OJ"& tg$dose == 2]
+len.vc.d5 <- tg$len[tg$supp == "VC"& tg$dose == 0.5]
+len.vc.d1 <- tg$len[tg$supp == "VC"& tg$dose == 1]
+len.vc.d2 <- tg$len[tg$supp == "VC"& tg$dose == 2]
+cat("Mean length with dosage 0.5 mg/day =", mean(c(len.oj.d5, len.vc.d5)))
+cat("Mean length with dosage 1 mg/day =", mean(c(len.oj.d1, len.vc.d1)))
+cat("Mean length with dosage 2 mg/day =", mean(c(len.oj.d2, len.vc.d2)))
+cat("Mean length using orange juice =", mean(c(len.oj.d5, len.oj.d1, len.oj.d2)))
+cat("Mean length using ascorbic acid =", mean(c(len.vc.d5, len.vc.d1, len.vc.d2)))
+```
+
+Let's create a quick boxplot to see how the length is affected by changes in dosage and delivery methods.
+
+```{r boxplot, fig.height=3, fig.width=5.5, echo=TRUE}
+# boxplots of length by supp and dose
+q1 <- qplot(dose, len, data = tg, geom = "boxplot", group = dose, xlab = "Dose", ylab = "Length")
+q2 <- qplot(supp, len, data = tg, geom = "boxplot", group = supp, xlab = "Supplement", ylab = "")
+grid.arrange(q1, q2, ncol = 2)
+```
+
+From the above results it can be said that both the mean and median lengths are greater with increased amounts of dosage and is also greater when the delivery method is Orange Juice (OJ) when compared to Ascorbic Acid (VC). Also the difference is significant between dosage amounts 0.5 and 1 mg/day. 
+
+Now, let's calculate some test statistics to see how likely is this observed difference in length with varying dosage and supplement type is true and that the observed statistic is not an extreme case.
+
+###Hypothesis Testing
+
+__Null Hypothesis__ - Let's consider a null hypothesis that there is no effect in tooth growth with change in dosage amounts and that the data we observed could be an error or just happened by chance.
+
+__Alternate Hypothesis__ - Let the alternate hypothesis be that the difference in mean lengths is indeed greater in subjects that received high amounts of vitamin C.
+
+__Assumptions__ - The assumptions for the hypothesis tests are that the calculated mean is a good estimate of the population mean and the difference in means is normally distributed.
+
+```{r t-test, echo=TRUE}
+# t-test between groups that received 0.5 and 1 mg/day dosage
+t.test(c(len.oj.d1, len.vc.d1), c(len.oj.d5, len.vc.d5))
+```
+
+The t-test results show that the difference in mean lengths is non zero and the t-value of 6.47 indicates that the difference between the two groups in comparision i.e., subjects that received 1 mg/day dosage and 0.5 mg/day is statistically significant in the positive direction. The results also show that the increase in average length falls between 6.27 and 11.98 with 95% confidence. In addition, considering a typical Type I error rate "${\alpha}$" value of 0.05, the low p-value is an indication that the null hypothesis could be false and that we can reject it under the stated assumptions.
+
+###Conclusion
+
+To conclude the analysis from our preliminary investigation, the tooth growth data indicates that the length of odontoblasts in guinea pigs is higher when they are given higher amounts of vitamin C particularly when delivered using orange juice as the supplement. We have validated the observation by calculating the statistical significance using t and p-values which indicates that the observed effect in our sample is inconsistent with the null hypothesis assuming that sample mean is representative of the population mean and the difference in means are in accord to the Central Limit Theorem.
